@@ -1,203 +1,343 @@
-# Virtual CAN ECU Validation
+# Automotive CAN Validation Lab
 
-[![Python tests](https://github.com/YOUR_USERNAME/virtual-can-ecu-validation/actions/workflows/tests.yml/badge.svg)](https://github.com/YOUR_USERNAME/virtual-can-ecu-validation/actions/workflows/tests.yml)
+A bilingual learning and engineering project for building practical knowledge of automotive CAN communication, software validation and requirements-based testing.
 
-An incremental, requirements-based learning project for automotive CAN
-communication and virtual ECU validation.
+The project is developed incrementally: each technical concept is first studied in English and German, then translated into small software requirements, Python implementations and automated tests.
 
-Ein schrittweise aufgebautes, anforderungsbasiertes Lernprojekt zu
-automobiler CAN-Kommunikation und virtueller ECU-Validierung.
+> **Current milestone:** `CAN Fundamentals`
+> **Status:** In progress
+> **Current version:** `0.1.0`
 
-> **Current status / Aktueller Stand:** Milestone 0.1 — application data,
-> manual signal encoding, payload decoding and CAN-frame preparation. No bus
-> transmission is implemented yet. / Meilenstein 0.1 — Anwendungsdaten,
-> manuelle Signalcodierung, Nutzdatendecodierung und CAN-Frame-Vorbereitung.
-> Eine Busübertragung ist noch nicht implementiert.
+---
 
-## Project idea / Projektidee
+## Project overview
 
-The repository grows together with the theory. Each studied CAN concept becomes
-a small, documented and tested project increment. This prevents the repository
-from claiming tools or experience that have not yet been learned.
+The purpose of this repository is to develop a small virtual automotive communication and validation environment while learning the underlying engineering concepts step by step.
 
-Das Repository wächst gemeinsam mit der Theorie. Jedes behandelte CAN-Konzept
-wird zu einer kleinen, dokumentierten und getesteten Projekterweiterung. Dadurch
-behauptet das Repository keine Werkzeuge oder Erfahrungen, die noch nicht
-erarbeitet wurden.
+The project is not being created as a finished CAN or HIL system from the beginning. New functionality is added only after the corresponding theory has been studied and understood.
 
-## Current functionality / Aktuelle Funktionalität
-
-The first version can:
-
-- represent physical vehicle values in a typed `VehicleState`;
-- validate the documented physical ranges;
-- manually convert physical signals to raw values using factor and offset;
-- pack the raw values into an eight-byte Classic CAN payload;
-- prepare the payload with standard identifier `0x100`;
-- decode the payload back into physical values;
-- verify the behavior with automated tests.
-
-Die erste Version kann:
-
-- physikalische Fahrzeugwerte in einem typisierten `VehicleState` darstellen;
-- die dokumentierten physikalischen Wertebereiche prüfen;
-- physikalische Signale mithilfe von Faktor und Offset manuell in Rohwerte umrechnen;
-- die Rohwerte in eine acht Byte lange Classic-CAN-Nutzlast packen;
-- die Nutzlast mit dem Standard-Identifier `0x100` vorbereiten;
-- die Nutzlast wieder in physikalische Werte decodieren;
-- das Verhalten mit automatisierten Tests verifizieren.
-
-## Architecture / Architektur
-
-```mermaid
-flowchart LR
-    A[Vehicle scenario<br/>Fahrzeugszenario] --> B[VehicleState]
-    B --> C[Validation<br/>Validierung]
-    C --> D[Manual encoder<br/>Manueller Encoder]
-    D --> E[8-byte payload<br/>8-Byte-Nutzlast]
-    E --> F[Prepared CAN frame<br/>Vorbereiteter CAN-Frame]
-    F -. next milestone / nächster Meilenstein .-> G[python-can VirtualBus]
-```
-
-See [Architecture / Architektur](docs/architecture.md) for the design decision
-behind the manual first encoder.
-
-## Example / Beispiel
-
-Input / Eingang:
+The intended learning flow is:
 
 ```text
-Vehicle speed / Fahrzeuggeschwindigkeit: 123.45 km/h
-Brake pressed / Bremse betätigt: true
-Accelerator pedal / Fahrpedalstellung: 20.0 %
-Motor temperature / Motortemperatur: 70 °C
+Theory
+  ↓
+Software requirement
+  ↓
+Test case
+  ↓
+Python implementation
+  ↓
+Automated verification
+  ↓
+Documentation
 ```
 
-Prepared communication data / Vorbereitete Kommunikationsdaten:
+This approach connects automotive communication theory with professional software-development and validation practices.
+
+---
+
+## Deutsche Kurzbeschreibung
+
+Dieses Repository ist ein zweisprachiges Lern- und Entwicklungsprojekt zu den Themen Automotive-CAN-Kommunikation, Softwarevalidierung und anforderungsbasiertes Testen.
+
+Das Projekt wird schrittweise entwickelt. Zuerst wird ein technisches Thema auf Englisch und Deutsch erarbeitet. Anschließend werden daraus kleine Softwareanforderungen, Python-Implementierungen und automatisierte Tests abgeleitet.
+
+Neue Funktionen werden erst implementiert, nachdem die dazugehörigen theoretischen Grundlagen behandelt wurden.
+
+---
+
+## Current learning milestone
+
+### CAN 01 — Fundamentals / Grundlagen
+
+The current milestone covers the fundamental concepts of CAN communication:
+
+* Why vehicles use communication networks
+* CAN nodes, ECUs, controllers and transceivers
+* Broadcast and multi-master communication
+* Frames, messages and signals
+* Standard and extended CAN identifiers
+* Identifier-based arbitration priority
+* Dominant and recessive bits
+* Cyclic and event-based messages
+* Cycle times and communication timeouts
+* Raw and physical signal values
+* Classic CAN and CAN FD at a high level
+* Vehicle communication versus diagnostics
+
+The complete bilingual learning note is available here:
+
+* [`docs/learning_notes/01_can_fundamentals/01_CAN_Fundamentals.md`](docs/learning_notes/01_can_fundamentals/01_CAN_Fundamentals.md)
+
+---
+
+## Currently implemented
+
+The software currently provides:
+
+* Validation of 11-bit standard CAN identifiers
+* Validation of 29-bit extended CAN identifiers
+* Boundary-value tests for valid and invalid identifiers
+* Traceability between CAN fundamentals requirements and automated tests
+* A modern Python project structure using a `src` layout
+* Automated testing with `pytest`
+
+Example:
+
+```python
+from automotive_can_validation.can_identifier import (
+    is_valid_standard_identifier,
+)
+
+is_valid_standard_identifier(0x100)  # True
+is_valid_standard_identifier(0x7FF)  # True
+is_valid_standard_identifier(0x800)  # False
+```
+
+---
+
+## Current requirements
+
+The software requirements for this milestone are documented in:
+
+* [`requirements/CAN_FUNDAMENTALS_REQUIREMENTS.md`](requirements/CAN_FUNDAMENTALS_REQUIREMENTS.md)
+
+The current implementation begins with:
+
+| Requirement       | Description                              |
+| ----------------- | ---------------------------------------- |
+| `CAN-FND-REQ-001` | Validate standard 11-bit CAN identifiers |
+| `CAN-FND-REQ-002` | Validate extended 29-bit CAN identifiers |
+
+Additional fundamentals requirements will be implemented gradually during this milestone.
+
+---
+
+## Project structure
 
 ```text
-Identifier: 0x100
-Payload:    39 30 01 32 6E 00 00 00
-```
-
-## Installation
-
-Python 3.11 or newer is required. / Python 3.11 oder neuer wird benötigt.
-
-### Windows PowerShell
-
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -e ".[dev]"
-```
-
-### Linux or macOS
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-pip install -e ".[dev]"
-```
-
-## Run the demonstration / Demonstration ausführen
-
-```bash
-python -m virtual_can_validation
-```
-
-After installation, this command is also available:
-
-Nach der Installation steht auch dieser Befehl zur Verfügung:
-
-```bash
-can-demo
-```
-
-## Run the tests / Tests ausführen
-
-```bash
-pytest --cov=virtual_can_validation --cov-report=term-missing
-```
-
-## Repository structure / Repository-Struktur
-
-```text
-virtual-can-ecu-validation/
-├── .github/workflows/       # Continuous integration / CI
+automotive-can-validation-lab/
+├── .vscode/
+│   └── settings.json
 ├── docs/
-│   ├── learning_notes/      # Bilingual theory notes / Zweisprachige Lernnotizen
-│   ├── architecture.md
-│   ├── github_setup.md
-│   └── project_learning_map.md
-├── requirements/            # Testable project requirements / Testbare Anforderungen
-├── src/virtual_can_validation/
+│   ├──architecture.md
+│   ├──project_learning_map.md
+│   └── learning_notes/
+│       └── 01_CAN_Fundamentals
+│           ├──01_CAN_Fundamentals.md
+│           └──assets
+├── requirements/
+│   └── CAN_FUNDAMENTALS_REQUIREMENTS.md
+├── src/
+│   └── automotive_can_validation/
+│       ├── __init__.py
+│       └── can_identifier.py
 ├── tests/
-├── LICENSE
+│   └── test_can_identifier.py
+├── .gitignore
 ├── pyproject.toml
 └── README.md
 ```
 
-## Learning notes / Lernnotizen
+### Directory purpose
 
-1. [CAN 01 — Fundamentals / Grundlagen](docs/learning_notes/01_can_fundamentals/CAN_01_Fundamentals.md)
+* `docs/` contains bilingual technical learning notes.
+* `requirements/` contains testable software and validation requirements.
+* `src/` contains the actual Python package.
+* `tests/` contains automated tests for the implemented behavior.
+* `.vscode/` contains shared VS Code project settings.
+* `pyproject.toml` defines the Python project, dependencies and test configuration.
 
-The complete sequence and its planned code increments are documented in the
-[Learning-to-Project Map / Zuordnung von Lernstoff und Projekt](docs/project_learning_map.md).
+---
 
-## Requirements / Anforderungen
+## Development environment
 
-The current behavior is grounded in a small set of bilingual, testable
-requirements:
+The project currently uses:
 
-Das aktuelle Verhalten basiert auf einer kleinen Gruppe zweisprachiger,
-testbarer Anforderungen:
+* Python 3.11 or newer
+* VS Code
+* PowerShell on Windows
+* Python virtual environments with `venv`
+* `pytest`
+* `pytest-cov`
+* Git
 
-- [Initial Requirements / Erste Anforderungen](requirements/initial_requirements.md)
+The main development environment is Windows. Ubuntu will be used later for Linux-specific CAN tools such as SocketCAN.
 
-## Important limitations / Wichtige Einschränkungen
+---
 
-This educational milestone does **not** yet provide:
+## Local setup
 
-- physical CAN hardware or electrical behavior;
-- a `python-can` virtual bus;
-- real CAN arbitration or bit timing;
-- cyclic transmission or communication timeouts;
-- a DBC file or `cantools` integration;
-- a physical ECU, production SIL environment or HIL test bench;
-- functional-safety compliance.
+### 1. Open the project directory
 
-Dieser Lernmeilenstein bietet **noch nicht**:
+```powershell
+cd "path\to\automotive-can-validation-lab"
+```
 
-- physikalische CAN-Hardware oder elektrisches Verhalten;
-- einen virtuellen Bus mit `python-can`;
-- reale CAN-Arbitrierung oder Bit-Timing;
-- zyklische Übertragung oder Kommunikations-Timeouts;
-- eine DBC-Datei oder `cantools`-Integration;
-- ein physikalisches Steuergerät, eine produktive SIL-Umgebung oder einen HIL-Prüfstand;
-- Functional-Safety-Konformität.
+### 2. Create a virtual environment
 
-## Planned toolchain / Geplante Toolchain
+On Windows:
 
-Tools are added only when their related theory is studied:
+```powershell
+py -V:3.12 -m venv .venv
+```
 
-Werkzeuge werden erst ergänzt, wenn die zugehörige Theorie behandelt wurde:
+On Ubuntu:
 
-- Python and `pytest` — current / aktuell
-- `python-can` — virtual send and receive / virtuelles Senden und Empfangen
-- `cantools` and DBC — network-description-based encoding / DBC-basierte Codierung
-- GitHub Actions — automated regression tests / automatisierte Regressionstests
+```bash
+python3 -m venv .venv
+```
 
-## Official references / Offizielle Referenzen
+### 3. Activate the environment
 
-- [python-can documentation](https://python-can.readthedocs.io/en/stable/)
-- [cantools documentation](https://cantools.readthedocs.io/en/stable/)
-- [pytest documentation](https://docs.pytest.org/en/stable/)
-- [GitHub Actions: Building and testing Python](https://docs.github.com/en/actions/tutorials/build-and-test-code/python)
+Windows PowerShell:
 
-## License / Lizenz
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
 
-This project is available under the MIT License. / Dieses Projekt steht unter
-der MIT-Lizenz.
+Ubuntu:
+
+```bash
+source .venv/bin/activate
+```
+
+### 4. Install the project and development tools
+
+```powershell
+python -m pip install --upgrade pip
+python -m pip install -e ".[dev]"
+```
+
+The `-e` option installs the project in editable mode, so changes inside `src/` are immediately available without reinstalling the package.
+
+---
+
+## Running the tests
+
+Run the complete test suite:
+
+```powershell
+python -m pytest -v
+```
+
+Run only the CAN identifier tests:
+
+```powershell
+python -m pytest tests/test_can_identifier.py -v
+```
+
+Run the tests with coverage:
+
+```powershell
+python -m pytest --cov=automotive_can_validation --cov-report=term-missing
+```
+
+---
+
+## Testing approach
+
+Tests are written around observable software behavior.
+
+For each feature, the project should normally include:
+
+* Normal valid inputs
+* Lower and upper boundary values
+* Values immediately outside the valid range
+* Invalid or unsupported inputs
+* Clear references to the related software requirement
+
+Example relationship:
+
+```text
+CAN theory:
+Standard identifiers contain 11 bits.
+
+Requirement:
+CAN-FND-REQ-001
+
+Implementation:
+is_valid_standard_identifier()
+
+Tests:
+test_lowest_standard_identifier_is_valid()
+test_highest_standard_identifier_is_valid()
+test_negative_standard_identifier_is_invalid()
+test_identifier_above_standard_range_is_invalid()
+```
+
+---
+
+## Scope boundaries
+
+The following functionality is intentionally not implemented yet:
+
+* Detailed Classic CAN frame construction
+* Data-frame, remote-frame, error-frame or overload-frame handling
+* Bit stuffing
+* CRC calculation
+* ACK behavior
+* Signal bit packing
+* Byte order and endianness
+* DBC loading
+* CAN message encoding or decoding
+* `python-can`
+* Virtual or physical CAN transmission
+* Cyclic transmission processes
+* Communication-timeout monitoring logic
+* Restbus simulation
+* UDS diagnostics
+* HIL integration
+
+These topics will be added only after their corresponding theory lessons have been completed.
+
+---
+
+## Planned learning progression
+
+The repository is expected to evolve through separate learning milestones:
+
+```text
+0.1.x — CAN fundamentals
+0.2.x — Classic CAN frame structure
+0.3.x — Signals, scaling and byte order
+0.4.x — DBC-based encoding and decoding
+0.5.x — Virtual CAN communication
+0.6.x — Cyclic transmission and timeout monitoring
+0.7.x — Requirements-based ECU validation
+```
+
+This roadmap describes the intended direction. It does not claim that these features are already implemented.
+
+---
+
+## Learning objectives
+
+Through this project, I aim to develop practical foundational knowledge in:
+
+* Automotive CAN communication
+* Requirements-based development
+* Test-case design
+* Boundary-value testing
+* Python project organization
+* Automated testing with `pytest`
+* Technical documentation
+* Requirements traceability
+* Git and GitHub workflows
+* German and English automotive terminology
+
+---
+
+## Project status
+
+This repository is an active learning project.
+
+The current implementation represents only the concepts already covered in the CAN fundamentals lesson. The codebase will remain intentionally small until the current milestone has been fully understood, implemented and tested.
+
+---
+
+## Author
+
+**Felipe Rojas**
+
+Mechatronics engineer with a Master of Engineering in Artificial Intelligence for Smart Sensors and Actuators, developing practical knowledge for automotive software, integration and validation roles in Germany.
