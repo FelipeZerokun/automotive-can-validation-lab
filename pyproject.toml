@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "automotive-can-validation-lab"
+version = "0.1.0"
+description = "A bilingual learning project for automotive CAN communication and validation."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Felipe Rojas" }
+]
+dependencies = []
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0"
+]
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
