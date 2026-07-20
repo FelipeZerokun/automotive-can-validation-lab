@@ -9,13 +9,10 @@ next_topic: "Classic CAN frame structure / Aufbau eines Classic-CAN-Frames"
 
 # CAN 01 — Fundamentals / Grundlagen
 
-> **Learning goal / Lernziel:** Understand why CAN is used, how a CAN network is organized, how information is represented, and how messages obtain access to the shared bus. / Verstehen, warum CAN eingesetzt wird, wie ein CAN-Netzwerk aufgebaut ist, wie Informationen dargestellt werden und wie Nachrichten Zugriff auf den gemeinsamen Bus erhalten.
+> **Learning goal / Lernziel:** Understand why CAN is used, how a CAN network is organized, how information is represented, and how messages obtain access to the shared bus.
 
-## How to use this note / Verwendung dieser Lernnotiz
+> Verstehen, warum CAN eingesetzt wird, wie ein CAN-Netzwerk aufgebaut ist, wie Informationen dargestellt werden und wie Nachrichten Zugriff auf den gemeinsamen Bus erhalten.
 
-Read the English explanation first to understand the concept. Then read the German version aloud and try to explain the same idea without looking at the text. The German sections use terminology that is common in automotive engineering rather than forcing literal translations of every English term.
-
-Lies zuerst die englische Erklärung, um das Konzept zu verstehen. Lies anschließend die deutsche Version laut und versuche, denselben Inhalt ohne Vorlage zu erklären. Die deutschen Abschnitte verwenden Begriffe, die in der Automobilentwicklung üblich sind, anstatt jeden englischen Begriff künstlich wörtlich zu übersetzen.
 
 ## Progress / Lernfortschritt
 
@@ -54,7 +51,7 @@ Ohne ein gemeinsames Netzwerk müsste jedes Steuergerät über einzelne Punkt-zu
 
 CAN ermöglicht mehreren Steuergeräten den Informationsaustausch über einen gemeinsamen Kommunikationsbus.
 
-> **German speaking pattern / Deutsches Satzmuster:**  
+> **German speaking pattern / Deutsches Satzmuster:**
 > „CAN reduziert den Verkabelungsaufwand, weil mehrere Steuergeräte Informationen über einen gemeinsamen Bus austauschen können.“
 
 ---
@@ -132,6 +129,9 @@ CAN transceiver / CAN-Transceiver
 CAN_H and CAN_L / CAN_H und CAN_L
 ```
 
+![Simplified ECU Diagram / Vereinfachtes ECU-Diagramm](assets/ecu_elements.png)
+
+
 #### CAN controller / CAN-Controller
 
 **English:** The CAN controller handles protocol functions such as creating and interpreting frames, arbitration, acknowledgment, error detection, transmission, reception and receive filtering. It is often integrated into the microcontroller.
@@ -144,8 +144,8 @@ CAN_H and CAN_L / CAN_H und CAN_L
 
 **Deutsch:** Der CAN-Transceiver bildet die elektrische Schnittstelle zwischen CAN-Controller und physikalischem Bus. Er wandelt digitale Controllersignale in differentielle Bussignale um und empfangene Bussignale zurück in digitale Logikpegel.
 
-> **Important distinction / Wichtige Unterscheidung:**  
-> The controller handles the protocol; the transceiver handles the electrical interface.  
+> **Important distinction / Wichtige Unterscheidung:**
+> The controller handles the protocol; the transceiver handles the electrical interface.
 > Der Controller verarbeitet das Protokoll; der Transceiver stellt die elektrische Schnittstelle bereit.
 
 ---
@@ -221,7 +221,7 @@ CAN wird als **Multi-Master-Netzwerk** bezeichnet, weil kein einzelner zentraler
 
 Beginnen mehrere Knoten gleichzeitig mit der Übertragung, entscheidet die Arbitrierung, welcher Frame weitergesendet wird.
 
-> **Interview phrase / Formulierung fürs Vorstellungsgespräch:**  
+> **Interview phrase / Formulierung fürs Vorstellungsgespräch:**
 > „CAN ist ein Multi-Master-Bus. Jeder Teilnehmer darf bei freiem Bus senden. Bei gleichzeitigem Sendebeginn wird der Buszugriff durch eine bitweise Arbitrierung auf Basis des Identifiers entschieden.“
 
 ---
@@ -268,8 +268,8 @@ VehicleStatus message / Nachricht
 └── MotorTemperature / Motortemperatur
 ```
 
-> **Key relationship / Zentrale Beziehung:**  
-> A CAN frame transports a message, and the message payload may contain several signals.  
+> **Key relationship / Zentrale Beziehung:**
+> A CAN frame transports a message, and the message payload may contain several signals.
 > Ein CAN-Frame transportiert eine Nachricht, deren Nutzdaten mehrere Signale enthalten können.
 
 ---
@@ -355,7 +355,7 @@ Software und Hardware müssen wissen, ob ein Identifier im Standard- oder Extend
 
 As a general rule / Als allgemeine Regel gilt:
 
-> The lower numerical identifier has the higher arbitration priority.  
+> The lower numerical identifier has the higher arbitration priority.
 > Der kleinere numerische Identifier besitzt die höhere Arbitrierungspriorität.
 
 ```text
@@ -552,7 +552,7 @@ This difference must be covered by boundary tests. / Dieser Unterschied muss dur
 
 **UDS — Unified Diagnostic Services** ist ein Diagnoseprotokoll der Anwendungsschicht, das über CAN transportiert werden kann.
 
-> CAN and UDS are not the same. CAN provides the communication mechanism; UDS defines diagnostic services.  
+> CAN and UDS are not the same. CAN provides the communication mechanism; UDS defines diagnostic services.
 > CAN und UDS sind nicht dasselbe. CAN stellt den Kommunikationsmechanismus bereit; UDS definiert Diagnosedienste.
 
 ---
@@ -602,7 +602,7 @@ These properties are normally defined in / Diese Eigenschaften werden normalerwe
 - System requirements / Systemanforderungen
 - OEM and supplier standards / OEM- und Lieferantenstandards
 
-> CAN transports bits according to communication rules; the application defines their meaning and required behavior.  
+> CAN transports bits according to communication rules; the application defines their meaning and required behavior.
 > CAN transportiert Bits nach festgelegten Kommunikationsregeln; die Anwendung definiert deren Bedeutung und das geforderte Verhalten.
 
 ---
@@ -702,39 +702,39 @@ Relevante Empfänger dekodieren und verwenden die Signale
 
 Answer each question once in English and once in German. / Beantworte jede Frage einmal auf Englisch und einmal auf Deutsch.
 
-1. Why is CAN preferable to individual point-to-point wiring between ECUs?  
+1. Why is CAN preferable to individual point-to-point wiring between ECUs?
    Warum ist CAN gegenüber einer einzelnen Punkt-zu-Punkt-Verkabelung zwischen Steuergeräten vorteilhaft?
-2. What is the difference between a CAN controller and a CAN transceiver?  
+2. What is the difference between a CAN controller and a CAN transceiver?
    Was ist der Unterschied zwischen einem CAN-Controller und einem CAN-Transceiver?
-3. What does broadcast communication mean?  
+3. What does broadcast communication mean?
    Was bedeutet Broadcast-Kommunikation?
-4. Why is CAN called a multi-master network?  
+4. Why is CAN called a multi-master network?
    Warum wird CAN als Multi-Master-Netzwerk bezeichnet?
-5. What is the difference between a node and an ECU?  
+5. What is the difference between a node and an ECU?
    Was ist der Unterschied zwischen einem Knoten und einem Steuergerät?
-6. What is the difference between a frame, message and signal?  
+6. What is the difference between a frame, message and signal?
    Was ist der Unterschied zwischen Frame, Nachricht und Signal?
-7. What are the two main functions of a CAN identifier?  
+7. What are the two main functions of a CAN identifier?
    Welche zwei Hauptfunktionen hat ein CAN-Identifier?
-8. Why does `0x100` normally have higher priority than `0x500`?  
+8. Why does `0x100` normally have higher priority than `0x500`?
    Warum hat `0x100` normalerweise eine höhere Priorität als `0x500`?
-9. What do dominant and recessive mean?  
+9. What do dominant and recessive mean?
    Was bedeuten dominant und rezessiv?
-10. Why is arbitration called non-destructive?  
+10. Why is arbitration called non-destructive?
     Warum wird die Arbitrierung als zerstörungsfrei bezeichnet?
-11. What is the difference between cyclic and event-based transmission?  
+11. What is the difference between cyclic and event-based transmission?
     Was ist der Unterschied zwischen zyklischer und ereignisgesteuerter Übertragung?
-12. How can an ECU detect that another ECU stopped transmitting?  
+12. How can an ECU detect that another ECU stopped transmitting?
     Wie kann ein Steuergerät erkennen, dass ein anderes Steuergerät nicht mehr sendet?
-13. Why must the exact timeout boundary be specified?  
+13. Why must the exact timeout boundary be specified?
     Warum muss die genaue Timeout-Grenze spezifiziert werden?
-14. What is the difference between normal vehicle communication and diagnostics?  
+14. What is the difference between normal vehicle communication and diagnostics?
     Was ist der Unterschied zwischen normaler Fahrzeugkommunikation und Diagnose?
-15. Why is UDS not the same as CAN?  
+15. Why is UDS not the same as CAN?
     Warum ist UDS nicht dasselbe wie CAN?
-16. What are the high-level differences between Classic CAN and CAN FD?  
+16. What are the high-level differences between Classic CAN and CAN FD?
     Was sind die grundlegenden Unterschiede zwischen Classic CAN und CAN FD?
-17. What information is supplied by a DBC rather than by the CAN protocol?  
+17. What information is supplied by a DBC rather than by the CAN protocol?
     Welche Informationen liefert eine DBC-Datei, die nicht durch das CAN-Protokoll selbst festgelegt sind?
 
 ---
@@ -743,65 +743,65 @@ Answer each question once in English and once in German. / Beantworte jede Frage
 
 ### Question 1 / Frage 1
 
-Three nodes begin transmitting `0x080`, `0x100` and `0x500` simultaneously. Which one normally wins?  
+Three nodes begin transmitting `0x080`, `0x100` and `0x500` simultaneously. Which one normally wins?
 Drei Knoten beginnen gleichzeitig mit der Übertragung von `0x080`, `0x100` und `0x500`. Welcher gewinnt normalerweise?
 
 <details>
 <summary>Answer / Antwort</summary>
 
-`0x080`, because the lower numerical identifier normally has the higher arbitration priority.  
+`0x080`, because the lower numerical identifier normally has the higher arbitration priority.
 `0x080`, weil der kleinere numerische Identifier normalerweise die höhere Arbitrierungspriorität besitzt.
 
 </details>
 
 ### Question 2 / Frage 2
 
-A message has a cycle time of 100 ms. No valid frame has arrived for 600 ms. What should the receiver evaluate?  
+A message has a cycle time of 100 ms. No valid frame has arrived for 600 ms. What should the receiver evaluate?
 Eine Nachricht hat eine Zykluszeit von 100 ms. Seit 600 ms wurde kein gültiger Frame empfangen. Was sollte der Empfänger prüfen?
 
 <details>
 <summary>Answer / Antwort</summary>
 
-Communication-timeout handling. The exact response depends on the specified timeout threshold and application requirements.  
+Communication-timeout handling. The exact response depends on the specified timeout threshold and application requirements.
 Die Kommunikations-Timeout-Behandlung. Die genaue Reaktion hängt von der spezifizierten Timeout-Grenze und den Anwendungsanforderungen ab.
 
 </details>
 
 ### Question 3 / Frage 3
 
-Is `VehicleSpeed` normally a frame, message or signal?  
+Is `VehicleSpeed` normally a frame, message or signal?
 Ist `VehicleSpeed` normalerweise ein Frame, eine Nachricht oder ein Signal?
 
 <details>
 <summary>Answer / Antwort</summary>
 
-Usually a signal. It is packed into a message such as `VehicleStatus`, which is transported by a CAN frame.  
+Usually a signal. It is packed into a message such as `VehicleStatus`, which is transported by a CAN frame.
 Normalerweise ein Signal. Es wird in eine Nachricht wie `VehicleStatus` gepackt, die durch einen CAN-Frame übertragen wird.
 
 </details>
 
 ### Question 4 / Frage 4
 
-Can two receiving ECUs use the same CAN message?  
+Can two receiving ECUs use the same CAN message?
 Können zwei empfangende Steuergeräte dieselbe CAN-Nachricht verwenden?
 
 <details>
 <summary>Answer / Antwort</summary>
 
-Yes. CAN is broadcast-based, so several receivers can observe and use the same message.  
+Yes. CAN is broadcast-based, so several receivers can observe and use the same message.
 Ja. CAN basiert auf Broadcast-Kommunikation, daher können mehrere Empfänger dieselbe Nachricht empfangen und verwenden.
 
 </details>
 
 ### Question 5 / Frage 5
 
-Does a low identifier automatically mean that the information is more safety-critical?  
+Does a low identifier automatically mean that the information is more safety-critical?
 Bedeutet ein kleiner Identifier automatisch, dass die Information sicherheitskritischer ist?
 
 <details>
 <summary>Answer / Antwort</summary>
 
-No. It means that the message has higher arbitration priority. The network designer assigns this priority according to system requirements.  
+No. It means that the message has higher arbitration priority. The network designer assigns this priority according to system requirements.
 Nein. Er bedeutet, dass die Nachricht eine höhere Arbitrierungspriorität besitzt. Der Netzwerkentwickler legt diese Priorität entsprechend den Systemanforderungen fest.
 
 </details>
@@ -858,39 +858,39 @@ Suggested German result sentence / Möglicher deutscher Ergebnissatz:
 
 ### Concepts that are clear / Klare Konzepte
 
-- 
-- 
-- 
+-
+-
+-
 
 ### Concepts to revisit / Erneut zu prüfen
 
-- 
-- 
-- 
+-
+-
+-
 
 ### New German vocabulary / Neue deutsche Fachbegriffe
 
-- 
-- 
-- 
+-
+-
+-
 
 ### Questions to investigate / Offene Fragen
 
-- 
-- 
-- 
+-
+-
+-
 
 ### Examples from job postings or projects / Beispiele aus Stellenanzeigen oder Projekten
 
-- 
-- 
-- 
+-
+-
+-
 
 ---
 
 ## 28. Completion criterion / Abschlusskriterium
 
-Mark this topic complete when you can explain the following without reading, first in English and then in German.  
+Mark this topic complete when you can explain the following without reading, first in English and then in German.
 Markiere das Thema als abgeschlossen, wenn du die folgenden Punkte zuerst auf Englisch und anschließend auf Deutsch ohne Vorlage erklären kannst:
 
 1. Why CAN is used in vehicles. / Warum CAN in Fahrzeugen eingesetzt wird.
