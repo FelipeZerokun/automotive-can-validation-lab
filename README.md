@@ -54,3 +54,42 @@ Virtual CAN Bus
 │
 └── Validation Runner
     └── Executes test scenarios and fault-injection cases
+```
+
+## Development setup
+
+### Prerequisites
+
+- Git
+- Python 3.12
+- `uv`
+
+Create and synchronize the project environment:
+
+```powershell
+uv sync
+```
+
+Run the automated tests with coverage:
+
+```powershell
+uv run python -m pytest
+```
+
+Run the lint check:
+
+```powershell
+uv run ruff check .
+```
+
+Check formatting:
+
+```powershell
+uv run ruff format --check .
+```
+
+Apply formatting:
+
+```powershell
+uv run ruff format .
+```
