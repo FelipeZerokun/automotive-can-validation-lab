@@ -16,20 +16,22 @@ The completed project will simulate a small automotive network containing severa
 
 ## Milestone overview
 
-| # | Milestone | Main result |
-|---:|---|---|
-| 0 | Engineering foundation | Reproducible, tested Python repository with CI |
-| 1 | CAN fundamentals and frame model | Validated Classical CAN frame domain model |
-| 2 | Deterministic virtual CAN bus | Broadcast delivery and arbitration simulation |
-| 3 | Virtual automotive ECUs | Periodic messages, subscriptions, and timeouts |
-| 4 | Signal and DBC layer | Engineering-value encoding and decoding |
-| 5 | Diagnostic communication | Educational ISO-TP and UDS subset |
-| 6 | ECU validation framework | Executable scenarios and fault injection |
-| 7 | Integrated Automotive CAN Validation Lab | Portfolio-quality end-to-end simulation |
+| # | Milestone | Main result | Status |
+|---:|---|---|---|
+| 0 | Engineering foundation | Reproducible, tested Python repository with CI | Complete |
+| 1 | CAN fundamentals and frame model | Validated Classical CAN frame domain model | Next |
+| 2 | Deterministic virtual CAN bus | Broadcast delivery and arbitration simulation | Planned |
+| 3 | Virtual automotive ECUs | Periodic messages, subscriptions, and timeouts | Planned |
+| 4 | Signal and DBC layer | Engineering-value encoding and decoding | Planned |
+| 5 | Diagnostic communication | Educational ISO-TP and UDS subset | Planned |
+| 6 | ECU validation framework | Executable scenarios and fault injection | Planned |
+| 7 | Integrated Automotive CAN Validation Lab | Portfolio-quality end-to-end simulation | Planned |
 
 ---
 
 ## Milestone 0 — Engineering foundation
+
+**Status:** Complete
 
 ### Purpose
 
@@ -65,7 +67,7 @@ tests/
 
 ### Definition of done
 
-- `uv run pytest` succeeds.
+- `uv run python -m pytest` succeeds.
 - `uv run ruff check .` succeeds.
 - `uv run ruff format --check .` succeeds.
 - GitHub Actions runs those checks on every push and pull request.
@@ -74,6 +76,8 @@ tests/
 ---
 
 ## Milestone 1 — CAN fundamentals and frame model
+
+**Status:** Next
 
 ### Purpose
 
@@ -99,10 +103,21 @@ timestamp
 
 Validate identifier ranges and payload size. Provide readable, stable log output.
 
+Before implementation, define and document:
+
+- Accepted types and boundary values for every field
+- Standard and extended identifier ranges
+- Whether mutable payload inputs are rejected or copied to immutable `bytes`
+- Timestamp type, unit, and validation rules
+- Exception types for invalid values
+- The stable human-readable representation used for logging
+
 ### Deliverables
 
-- `protocol/frame.py`
-- Unit tests for valid and invalid IDs, payload sizes, equality, and representation
+- `src/automotive_can_validation_lab/protocol/frame.py`
+- `tests/unit/protocol/test_frame.py`
+- Unit tests for valid and invalid IDs, payload sizes, equality, immutability,
+  timestamp validation, and representation
 - `docs/can-fundamentals.md` with diagrams and definitions
 
 ### Definition of done
@@ -394,4 +409,3 @@ Before a milestone is considered complete:
 3. Ruff and pytest pass locally and in CI.
 4. The README or documentation explains the relevant CAN concept.
 5. The user can run a short demonstration command.
-

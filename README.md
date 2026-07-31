@@ -1,14 +1,38 @@
 # Automotive CAN Validation Lab
 
-> A test-driven virtual environment for learning, simulating, and validating automotive Controller Area Network (CAN) communication.
+[![CI](https://github.com/FelipeZerokun/automotive-can-validation-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/FelipeZerokun/automotive-can-validation-lab/actions/workflows/ci.yml)
+
+> A test-driven virtual environment for learning, simulating, and validating
+> automotive Controller Area Network (CAN) communication.
 
 ## Overview
 
-**Automotive CAN Validation Lab** is an educational software-engineering project that models a simplified automotive CAN network with multiple virtual Electronic Control Units (ECUs).
+**Automotive CAN Validation Lab** is a learning-first software-engineering
+project that models a simplified automotive CAN network with multiple virtual
+Electronic Control Units (ECUs).
 
-The project combines CAN protocol fundamentals, automotive communication concepts, simulation, automated testing, and CI/CD practices. Its objective is to evolve from small, understandable CAN components into an integrated virtual vehicle network validation environment.
+The project combines CAN protocol fundamentals, automotive communication,
+deterministic simulation, automated testing, and continuous integration. It
+evolves through small, working milestones from a validated CAN frame model into
+an integrated virtual vehicle-network validation environment.
 
-Repository name: `automotive-can-validation-lab`
+Repository: `automotive-can-validation-lab`
+
+## Project status
+
+| Milestone | Result | Status |
+|---:|---|---|
+| 0 | Reproducible Python repository with automated CI | Complete |
+| 1 | Validated Classical CAN frame model | Next |
+| 2 | Deterministic virtual CAN bus | Planned |
+| 3 | Virtual automotive ECUs | Planned |
+| 4 | Signal encoding and DBC integration | Planned |
+| 5 | Educational ISO-TP and UDS subset | Planned |
+| 6 | ECU validation scenarios and fault injection | Planned |
+| 7 | Integrated Automotive CAN Validation Lab | Planned |
+
+See the [project brief](docs/automotive_can_validation_lab_project_brief.md)
+and [development roadmap](docs/automotive_can_validation_lab_milestones.md).
 
 ## Goals
 
@@ -16,11 +40,13 @@ Repository name: `automotive-can-validation-lab`
 - Simulate message-based communication between virtual ECUs.
 - Model CAN arbitration, periodic transmission, message reception, and timeouts.
 - Decode and encode vehicle signals using DBC-style definitions.
-- Implement a limited diagnostic communication workflow.
-- Validate expected ECU behaviour through automated scenarios and fault injection.
-- Apply professional software-development practices: packaging, tests, linting, documentation, CI, and reproducible environments.
+- Implement a limited, educational diagnostic communication workflow.
+- Validate expected ECU behaviour through automated scenarios and fault
+  injection.
+- Apply professional engineering practices: packaging, tests, linting,
+  documentation, CI, and reproducible environments.
 
-## Core Concepts
+## Core concepts
 
 The project will cover:
 
@@ -35,7 +61,7 @@ The project will cover:
 - ISO-TP and a small educational subset of UDS diagnostics
 - Linux SocketCAN and virtual CAN (`vcan`) integration
 
-## Planned Architecture
+## Planned architecture
 
 ```text
 Virtual CAN Bus
@@ -56,18 +82,32 @@ Virtual CAN Bus
     └── Executes test scenarios and fault-injection cases
 ```
 
+## Repository layout
+
+```text
+.
+├── .github/workflows/                 GitHub Actions CI
+├── docs/                              Project brief and milestone roadmap
+├── src/automotive_can_validation_lab/ Python package
+├── tests/                             Automated tests
+├── pyproject.toml                     Project and tool configuration
+└── uv.lock                            Locked dependency resolution
+```
+
+Feature-specific modules are added only when their milestone begins.
+
 ## Development setup
 
 ### Prerequisites
 
 - Git
 - Python 3.12
-- `uv`
+- [`uv`](https://docs.astral.sh/uv/)
 
-Create and synchronize the project environment:
+Create and synchronize the locked project environment:
 
 ```powershell
-uv sync
+uv sync --locked --all-groups
 ```
 
 Run the automated tests with coverage:
@@ -93,3 +133,10 @@ Apply formatting:
 ```powershell
 uv run ruff format .
 ```
+
+## Scope
+
+This is an educational automotive simulation. It uses fictional identifiers,
+signals, ECU data, and diagnostic values. It does not model electrical bus
+characteristics and is not a production CAN controller, diagnostic stack, or
+vehicle safety system.
