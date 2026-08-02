@@ -1,0 +1,1 @@
+"""CAN protocol domain models."""

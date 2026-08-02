@@ -9,6 +9,7 @@ The completed project will simulate a small automotive network containing severa
 ## Guiding principles
 
 - Start with a small, deterministic Python simulation; do not begin with hardware, AUTOSAR, or a GUI.
+- Keep Python as the reference implementation through the integrated lab; introduce C++ only as a focused extension after the Python behavior is stable.
 - Turn each learned CAN concept into a tested feature.
 - Keep protocol logic independent of ECU behaviour and test infrastructure.
 - Use fictional CAN identifiers, signals, and ECUs unless a source explicitly permits real data.
@@ -19,13 +20,34 @@ The completed project will simulate a small automotive network containing severa
 | # | Milestone | Main result | Status |
 |---:|---|---|---|
 | 0 | Engineering foundation | Reproducible, tested Python repository with CI | Complete |
-| 1 | CAN fundamentals and frame model | Validated Classical CAN frame domain model | Next |
+| 1 | CAN fundamentals and frame model | Validated Classical CAN frame domain model | In progress |
 | 2 | Deterministic virtual CAN bus | Broadcast delivery and arbitration simulation | Planned |
 | 3 | Virtual automotive ECUs | Periodic messages, subscriptions, and timeouts | Planned |
 | 4 | Signal and DBC layer | Engineering-value encoding and decoding | Planned |
 | 5 | Diagnostic communication | Educational ISO-TP and UDS subset | Planned |
 | 6 | ECU validation framework | Executable scenarios and fault injection | Planned |
 | 7 | Integrated Automotive CAN Validation Lab | Portfolio-quality end-to-end simulation | Planned |
+
+## Milestone-to-path map
+
+The project evolves cumulatively: each milestone keeps and builds on the modules
+from earlier milestones. This map identifies the primary ownership of each path.
+Completed repository snapshots are preserved with Git tags rather than by
+duplicating the package into separate milestone directories.
+
+| Milestone | Primary repository paths |
+|---:|---|
+| 0 | `pyproject.toml`, `.github/workflows/`, package and test foundations |
+| 1 | `protocol/frame.py`, `tests/unit/protocol/`, `docs/can-fundamentals.md` |
+| 2 | `simulation/bus.py`, `simulation/clock.py`, `simulation/node.py` |
+| 3 | `ecus/` and its unit tests |
+| 4 | `signals/`, `dbcs/`, and signal round-trip tests |
+| 5 | `diagnostics/` and the diagnostic tester ECU |
+| 6 | `validation/`, executable scenarios, and structured reports |
+| 7 | Integrated CLI, architecture documentation, and end-to-end tests |
+
+When a milestone satisfies its definition of done, tag that commit as
+`milestone-N-complete`, where `N` is its milestone number.
 
 ---
 
@@ -77,7 +99,7 @@ tests/
 
 ## Milestone 1 — CAN fundamentals and frame model
 
-**Status:** Next
+**Status:** In progress
 
 ### Purpose
 
@@ -102,6 +124,8 @@ timestamp
 ```
 
 Validate identifier ranges and payload size. Provide readable, stable log output.
+Implement this milestone entirely in Python; a parallel C++ frame model is out
+of scope.
 
 Before implementation, define and document:
 
@@ -365,7 +389,8 @@ Ignition turns on
 - CAN FD message support
 - SocketCAN `vcan` interface bridge on Linux/WSL
 - CAN logging and replay
-- A C++ ECU implementation communicating with the Python simulation boundary
+- One C++ ECU process communicating with the Python validation environment
+  through SocketCAN `vcan`
 - A small visual dashboard
 - Hardware CAN adapter integration
 
@@ -377,17 +402,63 @@ Ignition turns on
 
 ---
 
+## Optional post-roadmap extension — C++ ECU integration
+
+### When to begin
+
+Begin this extension only after Milestone 7 is complete and the Python
+implementation provides a stable, tested behavioral reference.
+
+### Purpose
+
+Introduce embedded-style C++ development without converting the repository into
+two competing implementations of the same simulator.
+
+### Learn
+
+- C++ project organization and build configuration with CMake
+- Unit testing a C++ ECU component
+- Linux SocketCAN programming
+- Process-level integration between Python validation and C++ ECU behavior
+- Trade-offs between rapid validation tooling and embedded-oriented software
+
+### Recommended scope
+
+- Implement one virtual ECU, such as the Powertrain ECU, in C++.
+- Run it as a separate process on Linux or WSL.
+- Exchange CAN frames with the Python lab through SocketCAN `vcan`.
+- Keep Python as the source of truth for expected behavior and validation.
+- Choose a C++ unit-test framework when the extension begins rather than
+  introducing one during the Python milestones.
+
+### Explicitly avoid
+
+- Rewriting every Python module in C++
+- Adding Python/C++ language bindings without a demonstrated need
+- Mixing C++ into Milestone 1 frame validation
+- Claiming real-time or production-embedded behavior without measuring it
+
+### Possible deliverables
+
+- A self-contained C++ ECU directory with `CMakeLists.txt`
+- C++ unit tests
+- A SocketCAN adapter for the selected ECU
+- A Python-driven integration scenario
+- Documentation comparing the Python and C++ responsibilities
+
+---
+
 ## Technology decisions
 
 | Concern | Initial choice | Reason |
 |---|---|---|
-| Main language | Python | Fast learning loop, clear tests, strong CAN tooling |
+| Main language | Python through Milestone 7 | Fast learning loop, clear tests, strong CAN tooling, and a stable reference implementation |
 | Dependency management | `uv` + `pyproject.toml` | Reproducible environments and locked dependencies |
 | Testing | pytest + pytest-cov | Clear unit and scenario testing |
 | Formatting/linting | Ruff | One fast tool for formatting and linting |
 | Signal/DBC support | `cantools` | Use an established library rather than writing a DBC parser |
 | Virtual CAN integration | Linux SocketCAN `vcan` | Hardware-free CAN frame integration testing |
-| C++ | Later, as a focused ECU or performance exercise | Avoid premature mixed-language complexity |
+| C++ | Optional post-roadmap ECU integration through SocketCAN | Learn embedded-style integration without prematurely duplicating the lab |
 | Configuration | Typed Python settings and small YAML files | Hydra is unnecessary until ML-style experiment sweeps are required |
 
 ## Explicitly out of scope at the start

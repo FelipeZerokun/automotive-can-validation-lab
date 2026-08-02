@@ -23,7 +23,7 @@ Repository: `automotive-can-validation-lab`
 | Milestone | Result | Status |
 |---:|---|---|
 | 0 | Reproducible Python repository with automated CI | Complete |
-| 1 | Validated Classical CAN frame model | Next |
+| 1 | Validated Classical CAN frame model | In progress |
 | 2 | Deterministic virtual CAN bus | Planned |
 | 3 | Virtual automotive ECUs | Planned |
 | 4 | Signal encoding and DBC integration | Planned |
@@ -33,6 +33,8 @@ Repository: `automotive-can-validation-lab`
 
 See the [project brief](docs/automotive_can_validation_lab_project_brief.md)
 and [development roadmap](docs/automotive_can_validation_lab_milestones.md).
+Milestone 1 concepts and the frame contract are documented in
+[CAN fundamentals and frame model](docs/can-fundamentals.md).
 
 ## Goals
 
@@ -60,6 +62,28 @@ The project will cover:
 - CAN FD concepts
 - ISO-TP and a small educational subset of UDS diagnostics
 - Linux SocketCAN and virtual CAN (`vcan`) integration
+
+## Language strategy
+
+Python is the reference implementation for Milestones 1 through 7. It is used
+for the CAN protocol model, deterministic bus simulation, virtual ECUs, DBC
+handling, diagnostics, validation scenarios, tests, and reports.
+
+C++ is intentionally deferred until the integrated Python lab is complete. A
+later focused extension may implement one virtual ECU in C++ and connect it to
+the Python validation environment through Linux SocketCAN `vcan`:
+
+```text
+Python simulation and validation
+              ↕
+       SocketCAN vcan0
+              ↕
+      Optional C++ ECU
+```
+
+This provides a realistic process and communication boundary without
+duplicating the entire lab in two languages or introducing mixed build systems
+before they provide a clear learning benefit.
 
 ## Planned architecture
 

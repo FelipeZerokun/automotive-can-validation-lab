@@ -33,7 +33,7 @@ The verified baseline includes:
 - GitHub Actions CI on pushes and pull requests
 - A public GitHub repository with green CI
 
-**Milestone 1 — CAN fundamentals and frame model is next.**
+**Milestone 1 — CAN fundamentals and frame model is in progress.**
 
 ## Final vision
 
@@ -78,8 +78,39 @@ It must demonstrate:
 | Continuous integration | GitHub Actions |
 | Signal/DBC handling | Add `cantools` when the DBC milestone begins |
 | Virtual CAN integration | Add Linux SocketCAN `vcan` after the pure-Python simulator works |
-| C++ | Add later only as a focused extension |
+| C++ | After the integrated Python lab, optionally implement one ECU that communicates through SocketCAN; do not rewrite the complete lab |
 | Docker/Dev Container | Add only when Linux or SocketCAN reproducibility requires it |
+
+## Language strategy
+
+Python is the reference language for Milestones 1 through 7. The complete core
+lab—including protocol models, deterministic simulation, virtual ECUs, signal
+handling, diagnostics, validation scenarios, and reports—must work in Python
+before a second implementation language is introduced.
+
+This choice prioritizes:
+
+- Fast test-driven development and clear domain models
+- Deterministic simulation and readable validation scenarios
+- Strong CAN and DBC tooling
+- Straightforward debugging, logging, and report generation
+- One reproducible build and test environment while the architecture evolves
+
+C++ is reserved for a later, focused embedded-style exercise. The preferred
+extension is one virtual ECU implemented as a separate C++ process and connected
+to the Python lab through Linux SocketCAN `vcan`:
+
+```text
+Python validation runner and reference simulation
+                      ↕
+               SocketCAN vcan0
+                      ↕
+                One C++ ECU
+```
+
+The C++ component should have its own build and unit-test configuration. It
+should demonstrate language and integration trade-offs without duplicating
+every Python component or requiring Python/C++ bindings.
 
 ## Environment assumptions
 
@@ -119,7 +150,7 @@ platform-specific integration only after the core simulator is tested.
 ## Milestone order
 
 1. **Milestone 0 — Engineering foundation** — complete
-2. **Milestone 1 — CAN fundamentals and frame model** — next
+2. **Milestone 1 — CAN fundamentals and frame model** — in progress
 3. **Milestone 2 — Deterministic virtual CAN bus**
 4. **Milestone 3 — Virtual automotive ECUs**
 5. **Milestone 4 — Signal and DBC layer**
@@ -129,6 +160,10 @@ platform-specific integration only after the core simulator is tested.
 
 Do not skip a milestone unless the project owner explicitly changes the
 roadmap.
+
+C++ is not required for these eight milestones. Consider the C++ ECU integration
+only after Milestone 7 is complete and the Python implementation provides a
+stable behavioral reference.
 
 ## Definition of progress
 
