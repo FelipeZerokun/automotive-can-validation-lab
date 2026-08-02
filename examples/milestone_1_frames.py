@@ -8,7 +8,7 @@ def main() -> None:
     standard_frame = CanFrame(
         identifier=0x123,
         is_extended=False,
-        data=b"\xAA\x55",
+        data=b"\xaa\x55",
         timestamp=1.25,
     )
     extended_frame = CanFrame(
@@ -24,4 +24,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-    
