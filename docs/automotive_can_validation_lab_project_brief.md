@@ -33,7 +33,19 @@ The verified baseline includes:
 - GitHub Actions CI on pushes and pull requests
 - A public GitHub repository with green CI
 
-**Milestone 1 — CAN fundamentals and frame model is in progress.**
+**Milestone 1 — CAN fundamentals and frame model is complete.**
+
+The completed milestone provides:
+
+- An immutable Classical CAN frame domain model
+- Standard 11-bit and extended 29-bit identifier validation
+- Immutable zero-to-eight-byte payload handling
+- Validated deterministic simulation timestamps
+- Stable human-readable logging
+- Unit tests for normal, boundary, and failure behavior
+- A runnable standard-and-extended-frame demonstration
+
+**Milestone 2 — Deterministic virtual CAN bus is next.**
 
 ## Final vision
 
@@ -150,8 +162,8 @@ platform-specific integration only after the core simulator is tested.
 ## Milestone order
 
 1. **Milestone 0 — Engineering foundation** — complete
-2. **Milestone 1 — CAN fundamentals and frame model** — in progress
-3. **Milestone 2 — Deterministic virtual CAN bus**
+2. **Milestone 1 — CAN fundamentals and frame model** — complete
+3. **Milestone 2 — Deterministic virtual CAN bus** — next
 4. **Milestone 3 — Virtual automotive ECUs**
 5. **Milestone 4 — Signal and DBC layer**
 6. **Milestone 5 — Diagnostic communication**

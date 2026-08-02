@@ -97,6 +97,21 @@ CanFrame(id=0x00000123, format=extended, dlc=0, data=, timestamp=0.000000s)
 The DLC in this representation is derived from `len(data)`; it is not stored as
 a separate field that could disagree with the payload.
 
+## Run the demonstration
+
+From the repository root, create and log one standard and one extended frame:
+
+```powershell
+uv run python examples/milestone_1_frames.py
+```
+
+Expected output:
+
+```text
+CanFrame(id=0x123, format=standard, dlc=2, data=AA 55, timestamp=1.250000s)
+CanFrame(id=0x001ABCDE, format=extended, dlc=0, data=, timestamp=2.000000s)
+```
+
 ## Scope boundary
 
 This model deliberately does not simulate wire timing, electrical levels,

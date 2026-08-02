@@ -23,8 +23,8 @@ Repository: `automotive-can-validation-lab`
 | Milestone | Result | Status |
 |---:|---|---|
 | 0 | Reproducible Python repository with automated CI | Complete |
-| 1 | Validated Classical CAN frame model | In progress |
-| 2 | Deterministic virtual CAN bus | Planned |
+| 1 | Validated Classical CAN frame model | Complete |
+| 2 | Deterministic virtual CAN bus | Next |
 | 3 | Virtual automotive ECUs | Planned |
 | 4 | Signal encoding and DBC integration | Planned |
 | 5 | Educational ISO-TP and UDS subset | Planned |
@@ -118,7 +118,26 @@ Virtual CAN Bus
 └── uv.lock                            Locked dependency resolution
 ```
 
-Feature-specific modules are added only when their milestone begins.
+Feature-specific modules are added only when their milestone begins. Runnable
+milestone demonstrations live in `examples/`.
+
+## Milestone 1 demonstration
+
+Create and log valid standard and extended Classical CAN frames:
+
+```powershell
+uv run python examples/milestone_1_frames.py
+```
+
+Expected output:
+
+```text
+CanFrame(id=0x123, format=standard, dlc=2, data=AA 55, timestamp=1.250000s)
+CanFrame(id=0x001ABCDE, format=extended, dlc=0, data=, timestamp=2.000000s)
+```
+
+The demonstration uses the validated immutable frame model documented in
+[CAN fundamentals and frame model](docs/can-fundamentals.md).
 
 ## Development setup
 

@@ -1,6 +1,7 @@
 """Tests for the Classical CAN frame domain model."""
 
 import math
+from dataclasses import FrozenInstanceError
 
 import pytest
 
@@ -205,3 +206,103 @@ def test_rejects_invalid_numeric_timestamp(timestamp: float) -> None:
             data=b"",
             timestamp=timestamp,
         )
+
+
+def test_frames_with_same_normalized_values_are_equal() -> None:
+    first = CanFrame(
+        identifier=0x123,
+        is_extended=False,
+        data=bytearray([0xAA, 0x55]),  # type: ignore[arg-type]
+        timestamp=1,
+    )
+    second = CanFrame(
+        identifier=0x123,
+        is_extended=False,
+        data=b"\xaa\x55",
+        timestamp=1.0,
+    )
+
+    assert first == second
+
+
+@pytest.mark.parametrize(
+    "other",
+    [
+        CanFrame(0x124, False, b"\xaa\x55", 1.0),
+        CanFrame(0x123, True, b"\xaa\x55", 1.0),
+        CanFrame(0x123, False, b"\x00\x55", 1.0),
+        CanFrame(0x123, False, b"\xaa\x55", 2.0),
+    ],
+    ids=["identifier", "frame-format", "data", "timestamp"],
+)
+def test_frames_with_different_fields_are_not_equal(other: CanFrame) -> None:
+    frame = CanFrame(
+        identifier=0x123,
+        is_extended=False,
+        data=b"\xaa\x55",
+        timestamp=1.0,
+    )
+
+    assert frame != other
+
+
+@pytest.mark.parametrize(
+    ("field", "new_value"),
+    [
+        ("identifier", 0x456),
+        ("is_extended", True),
+        ("data", b"\x00"),
+        ("timestamp", 2.0),
+    ],
+)
+def test_frame_fields_cannot_be_reassigned(
+    field: str,
+    new_value: object,
+) -> None:
+    frame = CanFrame(
+        identifier=0x123,
+        is_extended=False,
+        data=b"\xaa\x55",
+        timestamp=1.0,
+    )
+
+    with pytest.raises(FrozenInstanceError):
+        setattr(frame, field, new_value)
+
+
+def test_equal_frames_have_the_same_hash() -> None:
+    first = CanFrame(0x123, False, b"\xaa\x55", 1.0)
+    second = CanFrame(0x123, False, b"\xaa\x55", 1.0)
+
+    frames = {first, second}
+
+    assert hash(first) == hash(second)
+    assert len(frames) == 1
+
+
+def test_formats_standard_frame_for_logging() -> None:
+    frame = CanFrame(
+        identifier=0x123,
+        is_extended=False,
+        data=b"\xaa\x05",
+        timestamp=1.25,
+    )
+
+    expected = "CanFrame(id=0x123, format=standard, dlc=2, data=AA 05, timestamp=1.250000s)"
+
+    assert str(frame) == expected
+    assert repr(frame) == expected
+
+
+def test_formats_extended_empty_frame_for_logging() -> None:
+    frame = CanFrame(
+        identifier=0x123,
+        is_extended=True,
+        data=b"",
+        timestamp=0.0,
+    )
+
+    expected = "CanFrame(id=0x00000123, format=extended, dlc=0, data=, timestamp=0.000000s)"
+
+    assert str(frame) == expected
+    assert repr(frame) == expected

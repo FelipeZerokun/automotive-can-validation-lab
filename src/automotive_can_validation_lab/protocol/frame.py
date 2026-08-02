@@ -61,3 +61,19 @@ class CanFrame:
             normalized_timestamp = 0.0
 
         object.__setattr__(self, "timestamp", normalized_timestamp)
+
+    def __str__(self) -> str:
+        """Return the stable human-readable frame representation."""
+        identifier_width = 8 if self.is_extended else 3
+        frame_format = "extended" if self.is_extended else "standard"
+        formatted_data = " ".join(f"{byte:02X}" for byte in self.data)
+
+        return (
+            f"CanFrame(id=0x{self.identifier:0{identifier_width}X}, "
+            f"format={frame_format}, dlc={len(self.data)}, "
+            f"data={formatted_data}, timestamp={self.timestamp:.6f}s)"
+        )
+
+    def __repr__(self) -> str:
+        """Return the stable developer-facing frame representation."""
+        return str(self)

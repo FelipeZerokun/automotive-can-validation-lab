@@ -20,8 +20,8 @@ The completed project will simulate a small automotive network containing severa
 | # | Milestone | Main result | Status |
 |---:|---|---|---|
 | 0 | Engineering foundation | Reproducible, tested Python repository with CI | Complete |
-| 1 | CAN fundamentals and frame model | Validated Classical CAN frame domain model | In progress |
-| 2 | Deterministic virtual CAN bus | Broadcast delivery and arbitration simulation | Planned |
+| 1 | CAN fundamentals and frame model | Validated Classical CAN frame domain model | Complete |
+| 2 | Deterministic virtual CAN bus | Broadcast delivery and arbitration simulation | Next |
 | 3 | Virtual automotive ECUs | Periodic messages, subscriptions, and timeouts | Planned |
 | 4 | Signal and DBC layer | Engineering-value encoding and decoding | Planned |
 | 5 | Diagnostic communication | Educational ISO-TP and UDS subset | Planned |
@@ -38,7 +38,7 @@ duplicating the package into separate milestone directories.
 | Milestone | Primary repository paths |
 |---:|---|
 | 0 | `pyproject.toml`, `.github/workflows/`, package and test foundations |
-| 1 | `protocol/frame.py`, `tests/unit/protocol/`, `docs/can-fundamentals.md` |
+| 1 | `protocol/frame.py`, `tests/unit/protocol/`, `docs/can-fundamentals.md`, `examples/milestone_1_frames.py` |
 | 2 | `simulation/bus.py`, `simulation/clock.py`, `simulation/node.py` |
 | 3 | `ecus/` and its unit tests |
 | 4 | `signals/`, `dbcs/`, and signal round-trip tests |
@@ -99,7 +99,7 @@ tests/
 
 ## Milestone 1 — CAN fundamentals and frame model
 
-**Status:** In progress
+**Status:** Complete
 
 ### Purpose
 
@@ -143,6 +143,7 @@ Before implementation, define and document:
 - Unit tests for valid and invalid IDs, payload sizes, equality, immutability,
   timestamp validation, and representation
 - `docs/can-fundamentals.md` with diagrams and definitions
+- `examples/milestone_1_frames.py` runnable demonstration
 
 ### Definition of done
 
@@ -154,6 +155,8 @@ Before implementation, define and document:
 ---
 
 ## Milestone 2 — Deterministic virtual CAN bus
+
+**Status:** Next
 
 ### Purpose
 
