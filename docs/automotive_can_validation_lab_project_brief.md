@@ -45,7 +45,15 @@ The completed milestone provides:
 - Unit tests for normal, boundary, and failure behavior
 - A runnable standard-and-extended-frame demonstration
 
-**Milestone 2 — Deterministic virtual CAN bus is next.**
+**Milestone 2 — Deterministic virtual CAN bus is implemented and verified locally.**
+
+It provides deterministic simulation time, node registration and deregistration,
+queued broadcast delivery, numeric-ID arbitration, retained losing requests,
+and immutable structured event records. The three-node demo is runnable with
+`uv run python examples/milestone_2_bus.py`. All 141 tests pass with 100%
+statement and branch coverage; Ruff lint and formatting checks pass.
+Commit, remote CI, and the completion tag remain pending before formal closure.
+See [the bus contract](virtual-can-bus.md). Milestone 3 is next after those checks.
 
 ## Final vision
 
@@ -163,7 +171,7 @@ platform-specific integration only after the core simulator is tested.
 
 1. **Milestone 0 — Engineering foundation** — complete
 2. **Milestone 1 — CAN fundamentals and frame model** — complete
-3. **Milestone 2 — Deterministic virtual CAN bus** — next
+3. **Milestone 2 — Deterministic virtual CAN bus** — implemented; local checks pass, CI/tag pending
 4. **Milestone 3 — Virtual automotive ECUs**
 5. **Milestone 4 — Signal and DBC layer**
 6. **Milestone 5 — Diagnostic communication**

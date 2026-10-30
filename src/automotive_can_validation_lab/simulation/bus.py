@@ -1,10 +1,22 @@
 """Deterministic virtual CAN bus."""
 
-from collections import deque
+from dataclasses import dataclass
+from typing import Literal
 
 from automotive_can_validation_lab.protocol.frame import CanFrame
 from automotive_can_validation_lab.simulation.clock import SimulationClock
 from automotive_can_validation_lab.simulation.node import VirtualCanNode
+
+
+@dataclass(frozen=True)
+class BusEvent:
+    """An immutable simulation event; frame timestamps retain request time."""
+
+    kind: Literal["registered", "deregistered", "requested", "cancelled", "lost", "delivered"]
+    timestamp: float
+    node_name: str
+    frame: CanFrame | None = None
+    recipients: tuple[str, ...] = ()
 
 
 class VirtualCanBus:
@@ -17,7 +29,13 @@ class VirtualCanBus:
 
         self._clock = clock
         self._nodes: dict[str, VirtualCanNode] = {}
-        self._pending_transmissions: deque[tuple[VirtualCanNode, CanFrame]] = deque()
+        self._pending_transmissions: list[tuple[VirtualCanNode, CanFrame]] = []
+        self._events: list[BusEvent] = []
+
+    @property
+    def events(self) -> tuple[BusEvent, ...]:
+        """Return an immutable snapshot of the ordered event history."""
+        return tuple(self._events)
 
     @property
     def clock(self) -> SimulationClock:
@@ -43,15 +61,20 @@ class VirtualCanBus:
             raise ValueError(f"node name {node.name!r} is already registered")
 
         self._nodes[node.name] = node
+        self._events.append(BusEvent("registered", self._clock.now, node.name))
 
     def deregister(self, node: VirtualCanNode) -> None:
         """Deregister a node and cancel its pending transmission requests."""
         self._require_registered(node)
 
         del self._nodes[node.name]
-        self._pending_transmissions = deque(
+        self._events.append(BusEvent("deregistered", self._clock.now, node.name))
+        for sender, frame in self._pending_transmissions:
+            if sender is node:
+                self._events.append(BusEvent("cancelled", self._clock.now, node.name, frame))
+        self._pending_transmissions = [
             request for request in self._pending_transmissions if request[0] is not node
-        )
+        ]
 
     def request_transmission(self, sender: VirtualCanNode, frame: CanFrame) -> None:
         """Queue a frame from a registered sender at the current simulation time."""
@@ -67,17 +90,35 @@ class VirtualCanBus:
             )
 
         self._pending_transmissions.append((sender, frame))
+        self._events.append(BusEvent("requested", self._clock.now, sender.name, frame))
 
     def process_next(self) -> CanFrame | None:
-        """Broadcast the next queued frame and return it, or return None when idle."""
+        """Deliver one winner ordered by request time, numeric ID, then arrival.
+
+        Contenders at the earliest timestamp remain pending after losing. Each
+        call is one arbitration round; it does not advance the simulation clock.
+        """
         if not self._pending_transmissions:
             return None
 
-        sender, frame = self._pending_transmissions.popleft()
+        winner_index = min(
+            range(len(self._pending_transmissions)),
+            key=lambda index: (
+                self._pending_transmissions[index][1].timestamp,
+                self._pending_transmissions[index][1].identifier,
+            ),
+        )
+        sender, frame = self._pending_transmissions.pop(winner_index)
+        for contender, pending in self._pending_transmissions:
+            if pending.timestamp == frame.timestamp:
+                self._events.append(BusEvent("lost", self._clock.now, contender.name, pending))
 
         for node in self._nodes.values():
             if node is not sender:
                 node.receive(frame)
+
+        recipients = tuple(node.name for node in self._nodes.values() if node is not sender)
+        self._events.append(BusEvent("delivered", self._clock.now, sender.name, frame, recipients))
 
         return frame
 

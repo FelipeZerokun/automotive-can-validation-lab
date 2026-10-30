@@ -24,8 +24,8 @@ Repository: `automotive-can-validation-lab`
 |---:|---|---|
 | 0 | Reproducible Python repository with automated CI | Complete |
 | 1 | Validated Classical CAN frame model | Complete |
-| 2 | Deterministic virtual CAN bus | Next |
-| 3 | Virtual automotive ECUs | Planned |
+| 2 | Deterministic virtual CAN bus | Implemented; local checks pass, CI/tag pending |
+| 3 | Virtual automotive ECUs | Next after Milestone 2 release checks |
 | 4 | Signal encoding and DBC integration | Planned |
 | 5 | Educational ISO-TP and UDS subset | Planned |
 | 6 | ECU validation scenarios and fault injection | Planned |
@@ -138,6 +138,21 @@ CanFrame(id=0x001ABCDE, format=extended, dlc=0, data=, timestamp=2.000000s)
 
 The demonstration uses the validated immutable frame model documented in
 [CAN fundamentals and frame model](docs/can-fundamentals.md).
+
+## Milestone 2 demonstration
+
+Run the three-node arbitration and retry demonstration:
+
+```powershell
+uv run python examples/milestone_2_bus.py
+```
+
+The bus delivers `0x100` before `0x200` even though `0x200` was queued first.
+The losing request remains pending, then reaches the other nodes on the next
+processing call. The instrument cluster observes both frames in that order.
+
+See [deterministic virtual CAN bus](docs/virtual-can-bus.md) for the API,
+event records, timestamp ordering, tie rules, and simulation limitations.
 
 ## Development setup
 

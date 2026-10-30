@@ -21,7 +21,7 @@ The completed project will simulate a small automotive network containing severa
 |---:|---|---|---|
 | 0 | Engineering foundation | Reproducible, tested Python repository with CI | Complete |
 | 1 | CAN fundamentals and frame model | Validated Classical CAN frame domain model | Complete |
-| 2 | Deterministic virtual CAN bus | Broadcast delivery and arbitration simulation | Next |
+| 2 | Deterministic virtual CAN bus | Broadcast delivery and arbitration simulation | Implemented; local checks pass, CI/tag pending |
 | 3 | Virtual automotive ECUs | Periodic messages, subscriptions, and timeouts | Planned |
 | 4 | Signal and DBC layer | Engineering-value encoding and decoding | Planned |
 | 5 | Diagnostic communication | Educational ISO-TP and UDS subset | Planned |
@@ -156,7 +156,14 @@ Before implementation, define and document:
 
 ## Milestone 2 — Deterministic virtual CAN bus
 
-**Status:** Next
+**Status:** Implemented and verified locally; commit, remote CI, and completion tag pending.
+
+The three-node demonstration, arbitration/retry tests, event logging, and API
+contract are available. Local validation passes 141 tests with 100% statement
+and branch coverage, plus Ruff lint and formatting checks. Run
+`uv run python examples/milestone_2_bus.py` and see
+[the bus contract](virtual-can-bus.md). Milestone 3 is the next development step
+once the release checks above are complete.
 
 ### Purpose
 
